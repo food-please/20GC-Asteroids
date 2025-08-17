@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://b7jqs7i7j58y3"]
+
+[ext_resource type="Script" uid="uid://dkjhyv3gssj72" path="res://bullet/projectile.gd" id="1_6wip1"]
+[ext_resource type="Texture2D" uid="uid://ccdl2ihm3ggt" path="res://icon.svg" id="1_k2aps"]
+[ext_resource type="AudioStream" uid="uid://cw731iv075loo" path="res://sfx/sfx_exp_short_soft4.wav" id="2_0qjqd"]
+[ext_resource type="AudioStream" uid="uid://dqxum2a1lr2sm" path="res://sfx/sfx_exp_short_soft5.wav" id="3_ynyjt"]
+[ext_resource type="AudioStream" uid="uid://dqfuwavv6qng7" path="res://sfx/sfx_exp_short_soft10.wav" id="4_3udht"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6wip1"]
+radius = 6.0
+
+[node name="Projectile" type="Area2D"]
+collision_layer = 512
+monitorable = false
+script = ExtResource("1_6wip1")
+allow_friendly_fire = true
+hit_hull_sounds = Array[AudioStream]([ExtResource("2_0qjqd"), ExtResource("3_ynyjt"), ExtResource("4_3udht")])
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_k2aps")
+
+[node name="VisibilityNotifier" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6wip1")

@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c75vhyrvxellc"]
+
+[ext_resource type="PackedScene" uid="uid://u2snf3fm0bq2" path="res://ship/ship.tscn" id="2_5q4o7"]
+[ext_resource type="Script" uid="uid://beujm41wwpmx0" path="res://src/player_controller.gd" id="2_gh0ne"]
+[ext_resource type="Script" uid="uid://cfy6unn04sjgm" path="res://bullet/projectile_manager.gd" id="3_5q4o7"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Ship" parent="." instance=ExtResource("2_5q4o7")]
+
+[node name="Node" type="Node" parent="Ship"]
+script = ExtResource("2_gh0ne")
+
+[node name="Bullets" type="Node2D" parent="."]
+script = ExtResource("3_5q4o7")
+
+[node name="VisualFX" type="Node2D" parent="."]
