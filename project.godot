@@ -54,7 +54,13 @@ fire_primary={
 [layer_names]
 
 2d_physics/layer_1="Ships"
+2d_physics/layer_2="Asteroids"
 2d_physics/layer_10="Weapon"
+
+[physics]
+
+2d/default_gravity=0.0
+2d/default_gravity_vector=Vector2(0, 0)
 
 [rendering]
 
