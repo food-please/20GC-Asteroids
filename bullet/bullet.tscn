@@ -14,6 +14,7 @@ collision_layer = 512
 monitorable = false
 script = ExtResource("1_6wip1")
 allow_friendly_fire = true
+fire_speed = 320.0
 hit_hull_sounds = Array[AudioStream]([ExtResource("2_0qjqd"), ExtResource("3_ynyjt"), ExtResource("4_3udht")])
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

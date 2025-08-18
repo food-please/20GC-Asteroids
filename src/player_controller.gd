@@ -4,7 +4,6 @@ var bullet: = load("res://bullet/bullet.tscn")
 
 @export var linear_acceleration: = 1500.0
 
-@export var max_angular_speed: = PI
 @export var angular_acceleration: = 6*PI
 
 @onready var ship: = get_parent() as Ship
@@ -37,13 +36,14 @@ func _process(delta: float) -> void:
 	#elif r
 
 
-#func _unhandled_input(event: InputEvent) -> void:
-	#if event.is_action_released("fire_primary"):
-		#var new_bullet = bullet.instantiate()
-		#new_bullet.global_position = ship.projectile_origin.global_position
-		#new_bullet.fire_velocity = (new_bullet.fire_speed+current_speed)*direction
-		#new_bullet.origin_ship = ship
-		#Events.projectile_fired.emit(new_bullet)
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_released("fire_primary"):
+		var new_bullet = bullet.instantiate()
+		new_bullet.global_position = ship.projectile_origin.global_position
+		new_bullet.fire_velocity = \
+			(new_bullet.fire_speed)*Vector2.RIGHT.rotated(ship.rotation)
+		new_bullet.origin_ship = ship
+		Events.projectile_fired.emit(new_bullet)
 #
 #
 func update_rotation(delta: float) -> void:
@@ -54,8 +54,8 @@ func update_rotation(delta: float) -> void:
 	else:
 		ship.angular_velocity = clampf(
 			ship.angular_velocity + rotation_direction * angular_acceleration * delta,
-			-max_angular_speed,
-			max_angular_speed
+			-ship.max_angular_speed,
+			ship.max_angular_speed
 		)
 		print(ship.angular_velocity)
 	

@@ -7,6 +7,7 @@ const MAX_COLLISIONS_PER_FRAME: = 4
 @export_range(0.0, 1.0, 0.02) var knockback_resist: = 0.0
 
 @export var max_linear_speed: = 560.0
+@export var max_angular_speed: = PI
 
 ## Determines how the object is currently rotating each frame. Positive is clockwise.
 ## Note that the object's velocity and current facing aren't necessarily related. This is usually
@@ -25,22 +26,32 @@ func _physics_process(delta: float) -> void:
 	
 	var collision: = move_and_collide(velocity*delta)
 	while collision != null and num_collisions < MAX_COLLISIONS_PER_FRAME:
-		#print("Vel ", velocity.length(), " Col ", collision.get_collider_velocity().length())
-		var collision_normal: = collision.get_normal()
-		var collision_speed: = velocity.length() + collision.get_collider_velocity().length()
+		var collider: = collision.get_collider()
 		
-		knockback += collision_normal * collision_speed * (1.0-knockback_resist)
-		var collider = collision.get_collider()
-		if "collision_repulsion" in collision.get_collider():
-			knockback *= collider.collision_repulsion
-			
-		collision = move_and_collide(collision_normal*collision.get_remainder().length())
-		#print(collision.get_normal())
-		#global_position = Vector2(0,0)
+		if collider is Ship:
+			collider.velocity = collider.take_collision(-collision.get_normal(), self, velocity)
+		knockback += take_collision(collision.get_normal(), collider,
+			collision.get_collider_velocity())
+		
+		collision = move_and_collide(collision.get_normal()*collision.get_remainder().length())
 		num_collisions += 1
 	
 	if num_collisions > 0:
 		velocity = knockback.limit_length(max_linear_speed)
+
+
+func take_collision(normal: Vector2, collider: Object, collider_velocity: Vector2) -> Vector2:
+	print("%s got hit by %s!" % [name, collider.name])
+	
+	var knockback: = Vector2.ZERO
+	var collision_speed: = velocity.length() + collider_velocity.length()
+	
+	knockback += normal * collision_speed * (1.0-knockback_resist)
+	
+	if "collision_repulsion" in collider:
+		knockback *= collider.collision_repulsion
+	
+	return knockback
 
 
 func take_hit(hit: Hit) -> void:

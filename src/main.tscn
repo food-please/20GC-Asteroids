@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://c75vhyrvxellc"]
+[gd_scene load_steps=8 format=3 uid="uid://c75vhyrvxellc"]
 
 [ext_resource type="Script" uid="uid://bweqvfvjpw78g" path="res://src/animatable_body_2d.gd" id="1_fyndt"]
 [ext_resource type="PackedScene" uid="uid://u2snf3fm0bq2" path="res://ship/ship.tscn" id="2_5q4o7"]
 [ext_resource type="Script" uid="uid://beujm41wwpmx0" path="res://src/player_controller.gd" id="2_gh0ne"]
 [ext_resource type="Texture2D" uid="uid://ccdl2ihm3ggt" path="res://icon.svg" id="3_3cfgd"]
 [ext_resource type="Script" uid="uid://cfy6unn04sjgm" path="res://bullet/projectile_manager.gd" id="3_5q4o7"]
+[ext_resource type="Script" uid="uid://rk65e5h7aaqf" path="res://src/node.gd" id="5_kmhfv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fyndt"]
 size = Vector2(140, 140)
@@ -44,12 +45,22 @@ position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_fyndt")
 
 [node name="Ship" parent="." instance=ExtResource("2_5q4o7")]
-position = Vector2(249, 264)
-collision_mask = 2
+position = Vector2(265, 331)
+collision_mask = 3
 knockback_resist = 0.2
+metadata/_edit_group_ = true
 
 [node name="Node" type="Node" parent="Ship"]
 script = ExtResource("2_gh0ne")
+
+[node name="Ship2" parent="." instance=ExtResource("2_5q4o7")]
+position = Vector2(510, -117)
+collision_mask = 3
+knockback_resist = 0.2
+metadata/_edit_group_ = true
+
+[node name="Node" type="Node" parent="Ship2"]
+script = ExtResource("5_kmhfv")
 
 [node name="Bullets" type="Node2D" parent="."]
 script = ExtResource("3_5q4o7")
