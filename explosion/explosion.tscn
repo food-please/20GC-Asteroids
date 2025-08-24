@@ -1,7 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bb1q7bpisvvcr"]
+[gd_scene load_steps=9 format=3 uid="uid://bb1q7bpisvvcr"]
 
 [ext_resource type="Texture2D" uid="uid://bj2t2iuluehrm" path="res://bullet/bullet.svg" id="1_echoh"]
 [ext_resource type="Script" uid="uid://bxrwknv0tqhj1" path="res://explosion/explosion.gd" id="1_pim3w"]
+
+[sub_resource type="Gradient" id="Gradient_pim3w"]
+offsets = PackedFloat32Array(0, 0.547486, 1)
+colors = PackedColorArray(0.869019, 0.407855, 0.368661, 1, 0.753974, 0.682222, 0.178851, 1, 0.910843, 0.860941, 0.734942, 1)
 
 [sub_resource type="Curve" id="Curve_4d6o0"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -10,6 +14,33 @@ point_count = 2
 [sub_resource type="Gradient" id="Gradient_echoh"]
 offsets = PackedFloat32Array(0.580838, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Animation" id="Animation_mp546"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_pim3w"]
 resource_name = "explode"
@@ -39,32 +70,19 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
-
-[sub_resource type="Animation" id="Animation_mp546"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.05),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CPUParticles2D:emitting")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"values": [{
+"args": [],
+"method": &"signal_explosion_frame"
+}]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tic5l"]
@@ -75,9 +93,9 @@ _data = {
 
 [node name="Explosion" type="Marker2D"]
 script = ExtResource("1_pim3w")
+particle_colours = SubResource("Gradient_pim3w")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-modulate = Color(0.885005, 0.587196, 0.428797, 1)
 emitting = false
 amount = 25
 lifetime = 0.5

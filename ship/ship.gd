@@ -43,6 +43,11 @@ func _physics_process(delta: float) -> void:
 		velocity = knockback_velocity.limit_length(max_linear_speed)
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_released("ui_cancel"):
+		explode()
+
+
 ## Resgister a weapon as primary or secondary, if those slots are not already taken.
 func register_weapon(weapon: Weapon) -> bool:
 	if primary_weapon == null:
@@ -53,6 +58,7 @@ func register_weapon(weapon: Weapon) -> bool:
 		secondary_weapon = weapon
 		print("Armed %s as secondary weapon!" % weapon.name)
 		return true
+	
 	print("Failed to register %s, weapon slots full!" % weapon.name)
 	return false
 
@@ -69,11 +75,9 @@ func knockback(knockback_direction: Vector2, collider_velocity: Vector2, collide
 		knockback_damping: = 1.0) -> Vector2:
 	var knockback_velocity: = Vector2.ZERO
 	var collision_speed: = velocity.length() + collider_velocity.length()
-	print("Col speed: ", collision_speed, " Source vel: ", velocity, " Coll vel: ", collider_velocity)
 	
 	knockback_velocity += knockback_direction * collision_speed * (1.0-knockback_resist) \
 		* knockback_damping
-	print("Knockback dir: ", knockback_velocity)
 	
 	if collider != null and "collision_repulsion" in collider:
 		knockback_velocity *= collider.collision_repulsion
@@ -86,10 +90,9 @@ func take_hit(hit: Hit) -> void:
 	hit_sound.stream = hit.hull_sfx
 	hit_sound.play()
 	
-	print("\nTransfer: ", hit.transferred_velocity)
-	velocity = knockback(hit.knockback_direction, hit.transferred_velocity)
-	#print(hit.transferred_velocity, " ", hit.knockback_direction)k
-	#velocity = knockback(hit.knockback_direction, hit.transferred_velocity).limit_length(max_linear_speed)
+	#velocity = knockback(hit.knockback_direction, hit.transferred_velocity)
+	velocity = \
+		knockback(hit.knockback_direction, hit.transferred_velocity).limit_length(max_linear_speed)
 	
 	anim.play("hurt")
 	
@@ -97,3 +100,17 @@ func take_hit(hit: Hit) -> void:
 	new_Explosion.global_position = hit.global_position
 	get_parent().add_child(new_Explosion)
 	new_Explosion.explode(-hit.knockback_direction)
+
+
+## Animate the destruction of the ship, playing a series of explosions before freeing the object.
+func explode() -> void:
+	# First of all, should disable further input
+	# Weapons should no longer fire
+	
+	var explosion_scene: = preload("res://explosion/explosion.tscn")
+	var explosion: = explosion_scene.instantiate()
+	
+	get_parent().add_child(explosion)
+	explosion.global_position = global_position
+	explosion.explosion_frame.connect(queue_free)
+	explosion.explode()
