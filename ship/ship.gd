@@ -2,6 +2,8 @@ class_name Ship extends CharacterBody2D
 
 const MAX_COLLISIONS_PER_FRAME: = 4
 
+@export var stats: Stats
+
 ## Determines how much the ship will resist knockback from damage and collisions.
 ## The higher the value, the greater the resistance.
 @export_range(0.0, 1.0, 0.02) var knockback_resist: = 0.0
@@ -19,6 +21,17 @@ var secondary_weapon: Weapon = null
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var hit_sound: AudioStreamPlayer = $HitSounds
+
+
+func _ready() -> void:
+	stats = stats
+	if stats == null:
+		stats = Stats.new()
+		stats.hull = stats.max_hull
+		stats.shields = stats.max_shields
+		print("Setup: ", stats.hull, " ", stats.max_hull)
+	
+	stats.hull_depleted.connect(explode)
 
 
 func _physics_process(delta: float) -> void:
@@ -86,20 +99,24 @@ func knockback(knockback_direction: Vector2, collider_velocity: Vector2, collide
 
 
 func take_hit(hit: Hit) -> void:
-	hit_sound.stop()
-	hit_sound.stream = hit.hull_sfx
-	hit_sound.play()
+	stats.hull -= hit.hull_damage
+	print("Ouch! ", hit.hull_damage, " Remaining: ", stats.hull)
 	
-	#velocity = knockback(hit.knockback_direction, hit.transferred_velocity)
-	velocity = \
-		knockback(hit.knockback_direction, hit.transferred_velocity).limit_length(max_linear_speed)
-	
-	anim.play("hurt")
-	
-	var new_Explosion = load("res://explosion/dust_hit.tscn").instantiate()
-	new_Explosion.global_position = hit.global_position
-	get_parent().add_child(new_Explosion)
-	new_Explosion.explode(-hit.knockback_direction)
+	if stats.hull > 0:
+		hit_sound.stop()
+		hit_sound.stream = hit.hull_sfx
+		hit_sound.play()
+		
+		#velocity = knockback(hit.knockback_direction, hit.transferred_velocity)
+		velocity = \
+			knockback(hit.knockback_direction, hit.transferred_velocity).limit_length(max_linear_speed)
+		
+		anim.play("hurt")
+		
+		var new_Explosion = load("res://explosion/dust_hit.tscn").instantiate()
+		new_Explosion.global_position = hit.global_position
+		get_parent().add_child(new_Explosion)
+		new_Explosion.explode(-hit.knockback_direction)
 
 
 ## Animate the destruction of the ship, playing a series of explosions before freeing the object.

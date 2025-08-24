@@ -13,6 +13,7 @@ func _ready() -> void:
 
 
 func explode() -> void:
+	SFX.play(load("res://sfx/sfx_exp_medium1.wav"))
 	_anim.play("explode")
 	await _anim.animation_finished
 	queue_free()

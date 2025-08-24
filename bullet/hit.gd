@@ -1,6 +1,7 @@
 class_name Hit extends RefCounted
 
-var damage: int
+var hull_damage: float
+var shield_damage: float
 
 var hull_sfx: AudioStream
 var shield_sfx: AudioStream

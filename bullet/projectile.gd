@@ -14,6 +14,10 @@ class_name Projectile extends Area2D
 @export var hit_hull_sounds: Array[AudioStream]
 @export var hit_shield_sounds: Array[AudioStream]
 
+@export_category("Effect")
+@export var hull_damage: = 1.0
+@export var shield_damage: = 1.0
+
 var origin_ship: Ship = null
 
 @onready var visibility: VisibleOnScreenNotifier2D = $VisibilityNotifier
@@ -35,6 +39,9 @@ func _ready() -> void:
 						new_hit.hull_sfx = hit_hull_sounds.pick_random()
 					if not hit_shield_sounds.is_empty(): 
 						new_hit.shield_sfx = hit_shield_sounds.pick_random()
+					
+					new_hit.hull_damage = hull_damage
+					new_hit.shield_damage = shield_damage
 					
 					new_hit.global_position = global_position
 					new_hit.transferred_velocity = -fire_velocity * knockback_factor
