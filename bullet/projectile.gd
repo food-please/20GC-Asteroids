@@ -7,6 +7,9 @@ class_name Projectile extends Area2D
 @export var fire_speed: = 100.0
 @export var fire_velocity: = Vector2.ZERO
 
+## The amount of velocity transferred to a hit object.
+@export var knockback_factor: = 0.1
+
 @export_category("Audio")
 @export var hit_hull_sounds: Array[AudioStream]
 @export var hit_shield_sounds: Array[AudioStream]
@@ -34,7 +37,9 @@ func _ready() -> void:
 						new_hit.shield_sfx = hit_shield_sounds.pick_random()
 					
 					new_hit.global_position = global_position
-					new_hit.normal = -fire_velocity
+					new_hit.transferred_velocity = -fire_velocity * knockback_factor
+					new_hit.knockback_direction =\
+						 (body.global_position - global_position).normalized()
 					
 					body.take_hit(new_hit)
 				

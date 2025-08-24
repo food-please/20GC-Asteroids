@@ -38,12 +38,8 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_released("fire_primary"):
-		var new_bullet = bullet.instantiate()
-		new_bullet.global_position = ship.projectile_origin.global_position
-		new_bullet.fire_velocity = \
-			(new_bullet.fire_speed)*Vector2.RIGHT.rotated(ship.rotation)
-		new_bullet.origin_ship = ship
-		Events.projectile_fired.emit(new_bullet)
+		if ship.primary_weapon != null:
+			ship.primary_weapon.fire()
 #
 #
 func update_rotation(delta: float) -> void:
@@ -57,7 +53,7 @@ func update_rotation(delta: float) -> void:
 			-ship.max_angular_speed,
 			ship.max_angular_speed
 		)
-		print(ship.angular_velocity)
+		#print(ship.angular_velocity)
 	
 	ship.rotation += ship.angular_velocity * delta
 
@@ -69,6 +65,6 @@ func update_current_speed(delta: float) -> void:
 	
 	else:
 		var facing: = Vector2.RIGHT.rotated(ship.rotation)
-		print("\nVel before: ", ship.velocity, " mod: ", ship.velocity.normalized() * throttle_direction * linear_acceleration * delta, " Facing: ", facing)
+		#print("\nVel before: ", ship.velocity, " mod: ", ship.velocity.normalized() * throttle_direction * linear_acceleration * delta, " Facing: ", facing)
 		ship.velocity += facing * throttle_direction * linear_acceleration * delta
 		ship.velocity = ship.velocity.limit_length(ship.max_linear_speed)
