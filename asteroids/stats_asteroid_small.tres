@@ -7,4 +7,5 @@ script = ExtResource("1_m8llt")
 max_hull = 1.0
 hull = 1.0
 max_shields = 0.0
+score = 25
 metadata/_custom_type_script = "uid://qoes4sa7qjtv"

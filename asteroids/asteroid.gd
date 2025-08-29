@@ -90,6 +90,8 @@ func explode() -> void:
 func _on_explosion_frame() -> void:
 	queue_free()
 	
+	Player.add_score(stats.score)
+	
 	var max_new_children: int = PROPERTIES[size][MAX_NEW_ASTEROIDS]
 	var new_asteroids: = 0 if max_new_children <= 0 else (randi()%max_new_children + 1)
 	if new_asteroids > 0:

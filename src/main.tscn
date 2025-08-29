@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c75vhyrvxellc"]
+[gd_scene load_steps=18 format=3 uid="uid://c75vhyrvxellc"]
 
 [ext_resource type="Script" uid="uid://bweqvfvjpw78g" path="res://asteroids/asteroid.gd" id="1_fyndt"]
 [ext_resource type="Script" uid="uid://oarf7dfhsgoo" path="res://asteroids/asteroid_manager.gd" id="1_mgm53"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://rk65e5h7aaqf" path="res://src/node.gd" id="5_kmhfv"]
 [ext_resource type="PackedScene" uid="uid://b7jqs7i7j58y3" path="res://bullet/bullet.tscn" id="6_5mrjc"]
 [ext_resource type="Script" uid="uid://qoes4sa7qjtv" path="res://stats.gd" id="7_kf8lf"]
+[ext_resource type="Script" uid="uid://d16qtip75uecw" path="res://src/ui/ui_score.gd" id="11_uewes"]
 
 [sub_resource type="Environment" id="Environment_5mrjc"]
 background_mode = 3
@@ -18,23 +19,23 @@ glow_intensity = 1.0
 glow_bloom = 0.2
 glow_hdr_threshold = 0.8
 
-[sub_resource type="Resource" id="Resource_mgm53"]
-script = ExtResource("7_kf8lf")
-max_hull = 10.0
-hull = 10.0
-max_shields = 0.0
-score = 0
-metadata/_custom_type_script = "uid://qoes4sa7qjtv"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fyndt"]
-size = Vector2(140, 140)
-
 [sub_resource type="Resource" id="Resource_uewes"]
 script = ExtResource("7_kf8lf")
 max_hull = 5.0
 hull = 5.0
 max_shields = 0.0
-score = 0
+score = 50
+metadata/_custom_type_script = "uid://qoes4sa7qjtv"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fyndt"]
+size = Vector2(140, 140)
+
+[sub_resource type="Resource" id="Resource_kqbth"]
+script = ExtResource("7_kf8lf")
+max_hull = 10.0
+hull = 10.0
+max_shields = 0.0
+score = 100
 metadata/_custom_type_script = "uid://qoes4sa7qjtv"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5mrjc"]
@@ -69,7 +70,7 @@ collision_mask = 512
 sync_to_physics = false
 script = ExtResource("1_fyndt")
 size = 3
-stats = SubResource("Resource_mgm53")
+stats = SubResource("Resource_uewes")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Asteroids/AnimatableBody2D"]
@@ -88,7 +89,7 @@ collision_mask = 512
 sync_to_physics = false
 script = ExtResource("1_fyndt")
 size = 1
-stats = SubResource("Resource_uewes")
+stats = SubResource("Resource_kqbth")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Asteroids/AnimatableBody2D2"]
@@ -136,3 +137,16 @@ metadata/_edit_lock_ = true
 
 [node name="VisualFX" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Score" type="MarginContainer" parent="UI"]
+offset_right = 69.0
+offset_bottom = 23.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 12
+script = ExtResource("11_uewes")
+
+[node name="Label" type="Label" parent="UI/Score"]
+layout_mode = 2
+text = "SCORE: 0"
