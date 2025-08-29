@@ -1,9 +1,9 @@
 extends Node
 
 
-func play(audio: AudioStream, is_spatial: = false, position: = Vector2.ZERO) -> void:
+func play(audio: AudioStream, position: = Vector2.INF) -> void:
 	var new_audio_player
-	if is_spatial:
+	if position.is_finite():
 		new_audio_player = AudioStreamPlayer2D.new()
 		new_audio_player.global_position = position
 	

@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://8wrlomylykv7"]
+
+[ext_resource type="Texture2D" uid="uid://ccdl2ihm3ggt" path="res://icon.svg" id="1_fn3cv"]
+[ext_resource type="Script" uid="uid://bweqvfvjpw78g" path="res://asteroids/asteroid.gd" id="1_mry8r"]
+[ext_resource type="Script" uid="uid://qoes4sa7qjtv" path="res://stats.gd" id="2_5s5pr"]
+
+[sub_resource type="Resource" id="Resource_cp6py"]
+script = ExtResource("2_5s5pr")
+max_hull = 10.0
+hull = 10.0
+max_shields = 0.0
+score = 0
+metadata/_custom_type_script = "uid://qoes4sa7qjtv"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mry8r"]
+size = Vector2(110, 110)
+
+[node name="Asteroid" type="AnimatableBody2D"]
+scale = Vector2(1.1, 1.1)
+sync_to_physics = false
+script = ExtResource("1_mry8r")
+size = 2
+stats = SubResource("Resource_cp6py")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_fn3cv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mry8r")
+debug_color = Color(0.928692, 0.26696, 0, 0.42)

@@ -100,7 +100,6 @@ func knockback(knockback_direction: Vector2, collider_velocity: Vector2, collide
 
 func take_hit(hit: Hit) -> void:
 	stats.hull -= hit.hull_damage
-	print("Ouch! ", hit.hull_damage, " Remaining: ", stats.hull)
 	
 	if stats.hull > 0:
 		hit_sound.stop()

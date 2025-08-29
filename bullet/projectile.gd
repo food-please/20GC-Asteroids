@@ -32,7 +32,8 @@ func _ready() -> void:
 				print("No friendly fire!")
 			
 			else:
-				if body is Ship:
+				#if body is Ship:
+				if body.has_method("take_hit"):
 					#print("Hit!")
 					var new_hit: = Hit.new()
 					if not hit_hull_sounds.is_empty(): 

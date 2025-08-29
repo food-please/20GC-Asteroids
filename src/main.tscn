@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://c75vhyrvxellc"]
+[gd_scene load_steps=17 format=3 uid="uid://c75vhyrvxellc"]
 
-[ext_resource type="Script" uid="uid://bweqvfvjpw78g" path="res://src/animatable_body_2d.gd" id="1_fyndt"]
+[ext_resource type="Script" uid="uid://bweqvfvjpw78g" path="res://asteroids/asteroid.gd" id="1_fyndt"]
+[ext_resource type="Script" uid="uid://oarf7dfhsgoo" path="res://asteroids/asteroid_manager.gd" id="1_mgm53"]
 [ext_resource type="PackedScene" uid="uid://u2snf3fm0bq2" path="res://ship/ship.tscn" id="2_5q4o7"]
 [ext_resource type="Script" uid="uid://beujm41wwpmx0" path="res://src/player_controller.gd" id="2_gh0ne"]
 [ext_resource type="Texture2D" uid="uid://ccdl2ihm3ggt" path="res://icon.svg" id="3_3cfgd"]
@@ -8,6 +9,7 @@
 [ext_resource type="Script" uid="uid://cr43i7nrkb0o7" path="res://weapon/weapon.gd" id="4_rlaii"]
 [ext_resource type="Script" uid="uid://rk65e5h7aaqf" path="res://src/node.gd" id="5_kmhfv"]
 [ext_resource type="PackedScene" uid="uid://b7jqs7i7j58y3" path="res://bullet/bullet.tscn" id="6_5mrjc"]
+[ext_resource type="Script" uid="uid://qoes4sa7qjtv" path="res://stats.gd" id="7_kf8lf"]
 
 [sub_resource type="Environment" id="Environment_5mrjc"]
 background_mode = 3
@@ -16,11 +18,35 @@ glow_intensity = 1.0
 glow_bloom = 0.2
 glow_hdr_threshold = 0.8
 
+[sub_resource type="Resource" id="Resource_mgm53"]
+script = ExtResource("7_kf8lf")
+max_hull = 10.0
+hull = 10.0
+max_shields = 0.0
+score = 0
+metadata/_custom_type_script = "uid://qoes4sa7qjtv"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fyndt"]
 size = Vector2(140, 140)
 
+[sub_resource type="Resource" id="Resource_uewes"]
+script = ExtResource("7_kf8lf")
+max_hull = 5.0
+hull = 5.0
+max_shields = 0.0
+score = 0
+metadata/_custom_type_script = "uid://qoes4sa7qjtv"
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_5mrjc"]
 radius = 100.0
+
+[sub_resource type="Resource" id="Resource_kf8lf"]
+script = ExtResource("7_kf8lf")
+max_hull = 4.0
+hull = 2.0
+max_shields = 0.0
+score = 0
+metadata/_custom_type_script = "uid://qoes4sa7qjtv"
 
 [node name="Main" type="Node2D"]
 
@@ -32,35 +58,44 @@ offset_right = 1397.0
 offset_bottom = 734.0
 color = Color(0.0304486, 0.00529309, 1.50409e-09, 1)
 
-[node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
+[node name="Asteroids" type="Node2D" parent="."]
+script = ExtResource("1_mgm53")
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="Asteroids"]
 position = Vector2(798, 249)
+scale = Vector2(1.5, 1.5)
 collision_layer = 2
 collision_mask = 512
 sync_to_physics = false
 script = ExtResource("1_fyndt")
+size = 3
+stats = SubResource("Resource_mgm53")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Asteroids/AnimatableBody2D"]
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("3_3cfgd")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Asteroids/AnimatableBody2D"]
 position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_fyndt")
 
-[node name="AnimatableBody2D2" type="AnimatableBody2D" parent="."]
+[node name="AnimatableBody2D2" type="AnimatableBody2D" parent="Asteroids"]
 position = Vector2(674, 161)
+scale = Vector2(0.7, 0.7)
 collision_layer = 2
 collision_mask = 512
 sync_to_physics = false
 script = ExtResource("1_fyndt")
+size = 1
+stats = SubResource("Resource_uewes")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D2"]
+[node name="Sprite2D" type="Sprite2D" parent="Asteroids/AnimatableBody2D2"]
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("3_3cfgd")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Asteroids/AnimatableBody2D2"]
 position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_fyndt")
 
@@ -86,6 +121,7 @@ shape = SubResource("CircleShape2D_5mrjc")
 [node name="Ship2" parent="." instance=ExtResource("2_5q4o7")]
 position = Vector2(552, 488)
 collision_mask = 3
+stats = SubResource("Resource_kf8lf")
 metadata/_edit_group_ = true
 
 [node name="Node" type="Node" parent="Ship2"]
