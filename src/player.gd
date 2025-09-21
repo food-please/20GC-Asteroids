@@ -2,6 +2,8 @@ extends Node
 
 signal score_changed
 
+var ship: Node2D
+
 var lives: = 3
 var score: = 0
 

@@ -10,6 +10,8 @@ const MAX_NEW_ASTEROIDS: = 1
 const SCALE: = 2
 const STATS: = 3
 
+const MAX_DISTANCE_TO_FREE: = 2000*2000
+
 const PROPERTIES: = {
 	Size.HUGE: [1.0, 2, Vector2(1.5, 1.5), preload("res://asteroids/stats_asteroid_huge.tres")],
 	Size.BIG: [1.0, 3, Vector2(1.1, 1.1), preload("res://asteroids/stats_asteroid_big.tres")],
@@ -53,6 +55,20 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	position += velocity*delta
 	rotate(angular_speed*delta)
+	
+	if global_position.distance_squared_to(Player.ship.global_position) > MAX_DISTANCE_TO_FREE:
+		print("Too far.")
+		queue_free()
+
+
+#func _notification(what: int) -> void:
+	#if Engine.is_editor_hint():
+		#return
+	#
+	#match what:
+		#NOTIFICATION_UNPARENTED:
+			#print("Something changed")
+			#get_parent().add_random_asteroid()
 
 
 func take_hit(hit: Hit) -> void:
